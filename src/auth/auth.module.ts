@@ -7,11 +7,10 @@ import { jwtSecret } from "./constants";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { LocalStrategy } from "./strategies/local.strategy";
 import { AuthController } from "./auth.controller";
-import { UsersService } from "../users/users.service";
-import { UsersRepository } from "../users/users.repository";
 
 @Module({
   imports: [
+    UsersModule,
     PassportModule.register({
       defaultStrategy: "jwt",
     }),
@@ -23,12 +22,6 @@ import { UsersRepository } from "../users/users.repository";
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    UsersService,
-    UsersRepository,
-    JwtStrategy,
-    LocalStrategy,
-  ],
+  providers: [AuthService, JwtStrategy, LocalStrategy],
 })
 export class AuthModule {}

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "src/users/users.service";
 import { jwtSecret } from "./constants";
@@ -22,11 +22,15 @@ export class AuthService {
     return user;
   }
 
-  login(user: User): { access_token: string } {
-    const payload = { email: user.email, sub: user.username };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(userAuth: User): Promise<{ access_token: string }> {
+    const user = await this.usersService.getUserByEmail(userAuth.email);
+    if (user?.password === userAuth.password) {
+      const payload = { email: user.email, sub: user.username };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    }
+    throw new UnauthorizedException("Wrong credentials");
   }
 
   async verifyToken(token: string) {

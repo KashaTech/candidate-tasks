@@ -7,7 +7,7 @@ import { RegisterUserDto } from "./dto/registerUser.dto";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get("login/:userId")
+  @Get("login")
   async loginUser(@Param("userId") userId: string) {
     console.log(userId);
   }
