@@ -7,11 +7,6 @@ import { RegisterUserDto } from "./dto/registerUser.dto";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get("login")
-  async loginUser(@Param("userId") userId: string) {
-    console.log(userId);
-  }
-
   @Post("register")
   async registerUser(@Body() createUserDto: RegisterUserDto): Promise<User> {
     return this.usersService.registerUser(
